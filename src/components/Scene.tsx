@@ -1,11 +1,9 @@
 "use client";
 
 import {
-  Box,
   Environment,
   OrbitControls,
   PerspectiveCamera,
-  PresentationControls,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React from "react";
