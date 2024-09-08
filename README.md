@@ -12,5 +12,19 @@ Using create t3 as starting point.
 
 - [x] Deploy Batman
 - [x] Install known dependencies
-- [ ] Project Structure
-- [ ] Set up basic scene
+- [x] Project Structure
+- [x] Set up basic scene
+- [ ] Design Intro Page
+- [ ] Design Internal Page
+- [ ] Design UI/Interactions for Nav
+- [ ] Design FPO Model
+- [ ] Add Model
+- [ ] Add Loader
+- [ ] Model Interaction (Change material on hover)
+- [ ] Navigate on scroll
+- [ ] Animation Library
+- [ ] Animate Camera
+- [ ] Animate Scene
+- [ ] Seamless page transitions
+- [ ] Create Views on page
+- [ ] 3D animation events
