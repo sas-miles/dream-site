@@ -26,7 +26,7 @@ function Terrain() {
         wireframe
         displacementMap={terrain}
         displacementScale={5}
-        color={"#25293A"}
+        color={"#737373"}
       />
     </mesh>
   );

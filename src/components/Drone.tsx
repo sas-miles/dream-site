@@ -19,12 +19,12 @@ type GLTFResult = GLTF & {
 
 export function Drone(props: JSX.IntrinsicElements["group"]) {
   const { x, y, z, rotationX, rotationY, rotationZ } = useControls("Drone", {
-    x: { value: 6, min: -100, max: 100 },
-    y: { value: 4, min: -100, max: 100 },
-    z: { value: -12, min: -100, max: 100 },
-    rotationX: { value: 2.34, min: -Math.PI, max: Math.PI },
-    rotationY: { value: 0, min: -Math.PI, max: Math.PI },
-    rotationZ: { value: 1.62, min: -Math.PI, max: Math.PI },
+    x: { value: 0, min: -100, max: 100 },
+    y: { value: 0.4, min: -100, max: 100 },
+    z: { value: -2, min: -100, max: 100 },
+    rotationX: { value: 1.86, min: -Math.PI, max: Math.PI },
+    rotationY: { value: 0.36, min: -Math.PI, max: Math.PI },
+    rotationZ: { value: 3.14, min: -Math.PI, max: Math.PI },
   });
 
   const { nodes, materials } = useGLTF(

@@ -4,7 +4,7 @@ import { Button } from "~/components/ui/button";
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen justify-between bg-slate-950 align-middle text-white">
+    <main className="relative flex min-h-screen justify-between align-middle text-white">
       <div className="fixed z-0 h-screen w-screen">
         <Scene />
       </div>
