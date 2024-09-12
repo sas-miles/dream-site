@@ -7,6 +7,7 @@ Using create t3 as starting point.
 - React Three Fiber
 - Drei Library
 - Leva
+- Zustand
 
 ## To-Do
 
@@ -14,7 +15,7 @@ Using create t3 as starting point.
 - [x] Install known dependencies
 - [x] Project Structure
 - [x] Set up basic scene
-- [ ] Design Intro Page
+- [x] Design Intro Page
 - [ ] Design Internal Page
 - [ ] Design UI/Interactions for Nav
 - [ ] Design FPO Model
