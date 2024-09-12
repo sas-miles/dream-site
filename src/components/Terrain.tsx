@@ -2,7 +2,7 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useControls } from "leva";
 import React, { useRef } from "react";
-import * as THREE from "three";
+import type * as THREE from "three";
 
 function Terrain() {
   const terrain = useTexture("/textures/terrain03.png");

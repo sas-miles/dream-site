@@ -4,7 +4,7 @@ Command: npx gltfjsx@6.5.0 public/models/jet-drone.glb -o src/components/Drone.t
 Files: public/models/jet-drone.glb [373.05KB] > /Users/miles/Sites/devlog/dream-site/src/components/jet-drone-transformed.glb [654.35KB] (-75%)
 */
 
-import * as THREE from "three";
+import type * as THREE from "three";
 import React from "react";
 import { Float, useGLTF } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
@@ -14,7 +14,7 @@ type GLTFResult = GLTF & {
   nodes: {
     AirBrakeBox: THREE.Mesh;
   };
-  materials: {};
+  materials: Record<string, THREE.Material>;
 };
 
 export function Drone(props: JSX.IntrinsicElements["group"]) {
@@ -27,9 +27,7 @@ export function Drone(props: JSX.IntrinsicElements["group"]) {
     rotationZ: { value: 3.14, min: -Math.PI, max: Math.PI },
   });
 
-  const { nodes, materials } = useGLTF(
-    "/models/jet-drone-transformed.glb",
-  ) as GLTFResult;
+  const { nodes } = useGLTF("/models/jet-drone-transformed.glb") as GLTFResult;
   return (
     <Float
       speed={0.8}

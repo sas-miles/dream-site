@@ -1,14 +1,13 @@
 "use client";
 
 import {
-  CameraShake,
   Environment,
   OrbitControls,
   PerspectiveCamera,
 } from "@react-three/drei";
 
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import React, { useState } from "react";
+import { Canvas } from "@react-three/fiber";
+import React from "react";
 import Terrain from "./Terrain";
 import { Drone } from "./Drone";
 
@@ -16,7 +15,6 @@ import {
   EffectComposer,
   DepthOfField,
   Bloom,
-  Noise,
   Vignette,
 } from "@react-three/postprocessing";
 
@@ -31,7 +29,7 @@ export default function Scene() {
         depth: false,
       }}
     >
-      <EffectComposer multisampling={0} disableNormalPass={true}>
+      <EffectComposer multisampling={0}>
         <DepthOfField
           focusDistance={0}
           focalLength={0.02}
