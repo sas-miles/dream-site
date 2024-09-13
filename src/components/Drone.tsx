@@ -8,7 +8,7 @@ import type * as THREE from "three";
 import React from "react";
 import { Float, useGLTF } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
-import { useControls } from "leva";
+import { Leva, useControls } from "leva";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -29,22 +29,24 @@ export function Drone(props: JSX.IntrinsicElements["group"]) {
 
   const { nodes } = useGLTF("/models/jet-drone-transformed.glb") as GLTFResult;
   return (
-    <Float
-      speed={0.8}
-      rotationIntensity={0.3}
-      floatIntensity={0.1}
-      floatingRange={[1, 3]}
-    >
-      <group {...props} dispose={null}>
-        <mesh
-          geometry={nodes.AirBrakeBox.geometry}
-          material={nodes.AirBrakeBox.material}
-          rotation={[rotationX, rotationY, rotationZ]}
-          position={[x, y, z]}
-          scale={0.0005}
-        />
-      </group>
-    </Float>
+    <>
+      <Float
+        speed={0.8}
+        rotationIntensity={0.3}
+        floatIntensity={0.1}
+        floatingRange={[1, 3]}
+      >
+        <group {...props} dispose={null}>
+          <mesh
+            geometry={nodes.AirBrakeBox.geometry}
+            material={nodes.AirBrakeBox.material}
+            rotation={[rotationX, rotationY, rotationZ]}
+            position={[x, y, z]}
+            scale={0.0005}
+          />
+        </group>
+      </Float>
+    </>
   );
 }
 

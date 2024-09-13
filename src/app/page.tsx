@@ -1,10 +1,13 @@
+"use client";
 import Image from "next/image";
+import LoadingScreen from "~/components/LoadingScreen";
 import Scene from "~/components/Scene";
 import { Button } from "~/components/ui/button";
 
 export default function Home() {
   return (
     <main className="relative flex min-h-screen justify-between align-middle text-white">
+      <LoadingScreen />
       <div className="fixed z-0 h-screen w-screen">
         <Scene />
       </div>
