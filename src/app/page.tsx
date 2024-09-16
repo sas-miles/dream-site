@@ -1,23 +1,42 @@
 "use client";
-import Image from "next/image";
-import LoadingScreen from "~/components/LoadingScreen";
+import { useState, useEffect } from "react";
+import Landing from "~/components/Landing";
+import { LoadingScreen } from "~/components/LoadingScreen";
+import { useProgress } from "@react-three/drei";
+import { motion, AnimatePresence } from "framer-motion";
 import Scene from "~/components/Scene";
-import { Button } from "~/components/ui/button";
 
 export default function Home() {
+  const { progress, active } = useProgress();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (progress === 100 && !active) {
+      const timer = setTimeout(() => setIsLoading(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [progress, active]);
+
   return (
-    <main className="relative flex min-h-screen justify-between align-middle text-white">
-      <LoadingScreen />
-      <div className="fixed z-0 h-screen w-screen">
-        <Scene />
-      </div>
-      <div className="z-10 flex w-full flex-col items-center justify-between gap-4 py-12 align-middle">
-        <Image src={"/logo.svg"} alt={"logo"} width={252} height={31} />
-        <h1 className="text-center text-4xl">
-          Unmatched Autonomy. Unyielding Precision.
-        </h1>
-        <Button size={"lg"}>Enter_</Button>
-      </div>
-    </main>
+    <div className="relative min-h-screen bg-black">
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <LoadingScreen key="loading" />
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="relative h-screen w-full"
+          >
+            <div className="fixed inset-0 z-0">
+              <Scene />
+            </div>
+            <Landing />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

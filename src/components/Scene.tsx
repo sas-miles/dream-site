@@ -1,70 +1,111 @@
 "use client";
 
-import {
-  Environment,
-  OrbitControls,
-  PerspectiveCamera,
-} from "@react-three/drei";
-
+import * as THREE from "three";
+import { Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import React, { Suspense } from "react";
-import { getProject } from "@theatre/core";
+import React, { Suspense, useEffect, useRef } from "react";
 
 import Terrain from "./Terrain";
 import { Drone } from "./Drone";
 
-import studio from "@theatre/studio";
-import extension from "@theatre/r3f/dist/extension";
-import { editable as e } from "@theatre/r3f";
-import { SheetProvider } from "@theatre/r3f";
+import { initializeTheatre } from "~/lib/theatreSetup";
 
-studio.initialize();
-studio.extend(extension);
+import { getProject } from "@theatre/core";
+import { PerspectiveCamera } from "@theatre/r3f";
+import { useAnimationStore } from "~/store/animationStore";
 
-import {
-  EffectComposer,
-  DepthOfField,
-  Bloom,
-  Vignette,
-} from "@react-three/postprocessing";
+import { editable as e, SheetProvider } from "@theatre/r3f";
+import hadronTheatre from "~/store/Hadron.theatre-project-state.json";
+
 import { Leva } from "leva";
+const transitions: Record<string, [number, number]> = {
+  Intro: [0, 0],
+  Home: [0, 4],
+  Experience: [5, 8],
+  // Add other screen transitions as needed
+};
 
 export default function Scene() {
-  const handronProject = getProject("Handron");
-  const mainSheet = handronProject.sheet("Main");
+  initializeTheatre();
+  const projectRef = useRef(getProject("Hadron", { state: hadronTheatre }));
+  const sheetRef = useRef(projectRef.current.sheet("Main"));
+
+  const {
+    currentScreen,
+    targetScreen,
+    setCurrentScreen,
+    direction,
+    isAnimating,
+    setIsAnimating,
+  } = useAnimationStore();
+
+  useEffect(() => {
+    projectRef.current.ready
+      .then(() => {
+        if (currentScreen === targetScreen || isAnimating) return;
+
+        const reverse = direction === "reverse";
+
+        const transition = transitions[reverse ? currentScreen : targetScreen];
+        if (!transition) return;
+
+        setIsAnimating(true);
+
+        sheetRef.current.sequence
+          .play({
+            range: transition,
+            direction: reverse ? "reverse" : "normal",
+            rate: reverse ? 2 : 1,
+          })
+          .then(() => {
+            setCurrentScreen(targetScreen);
+            setIsAnimating(false);
+          })
+          .catch((error) => {
+            console.error("Error playing sequence:", error);
+            setIsAnimating(false);
+          });
+      })
+      .catch((error) => {
+        console.error("Error in project ready:", error);
+      });
+  }, [
+    targetScreen,
+    currentScreen,
+    direction,
+    setCurrentScreen,
+    isAnimating,
+    setIsAnimating,
+  ]);
+
+  const cameraTargetRef = useRef<THREE.Mesh>(null);
+
   return (
-    <>
-      <Leva hidden={true} />;
+    <div className="fixed z-0 h-screen w-screen">
+      <Leva hidden={true} />
       <Canvas
+        camera={{ position: [5, 5, 10], fov: 30, near: 1 }}
         gl={{
-          powerPreference: "high-performance",
-          alpha: false,
-          antialias: false,
-          stencil: false,
-          depth: false,
+          preserveDrawingBuffer: true,
         }}
       >
         <Suspense fallback={null}>
-          <EffectComposer multisampling={0}>
-            <DepthOfField
-              focusDistance={0}
-              focalLength={0.02}
-              bokehScale={2}
-              height={480}
-            />
-            <Bloom
-              luminanceThreshold={0}
-              luminanceSmoothing={0.9}
-              height={300}
-              opacity={3}
-            />
-            <Vignette eskil={false} offset={0.1} darkness={1.1} />
-          </EffectComposer>
-          <PerspectiveCamera makeDefault position={[0, 0, 3]} />
           <Environment preset="night" environmentIntensity={2} />
-
-          <OrbitControls />
-          <SheetProvider sheet={mainSheet}>
+          <SheetProvider sheet={sheetRef.current}>
+            <PerspectiveCamera
+              position={[0, 0, 3]}
+              makeDefault
+              theatreKey="Camera"
+              lookAt={cameraTargetRef}
+            />
+            <e.mesh
+              theatreKey="Camera Target"
+              visible="editor"
+              ref={cameraTargetRef}
+            >
+              <octahedronGeometry args={[0.1, 0]} />
+              <meshPhongMaterial color={"yellow"} />
+            </e.mesh>
             <e.group theatreKey="Drone">
               <Drone />
             </e.group>
@@ -74,6 +115,6 @@ export default function Scene() {
           </SheetProvider>
         </Suspense>
       </Canvas>
-    </>
+    </div>
   );
 }

@@ -8,7 +8,7 @@ import type * as THREE from "three";
 import React from "react";
 import { Float, useGLTF } from "@react-three/drei";
 import type { GLTF } from "three-stdlib";
-import { Leva, useControls } from "leva";
+import { useControls } from "leva";
 
 type GLTFResult = GLTF & {
   nodes: {
