@@ -10,7 +10,6 @@ export function LoadingScreen() {
   const [showProgress, setShowProgress] = useState(false);
 
   useEffect(() => {
-    // Only show progress after initial client-side render
     setShowProgress(true);
   }, []);
 

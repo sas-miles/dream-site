@@ -1,7 +1,12 @@
 "use client";
 
 import * as THREE from "three";
-import { Environment } from "@react-three/drei";
+import {
+  Environment,
+  Scroll,
+  ScrollControls,
+  useScroll,
+} from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef } from "react";
 
@@ -18,11 +23,12 @@ import { editable as e, SheetProvider } from "@theatre/r3f";
 import hadronTheatre from "~/store/Hadron.theatre-project-state.json";
 
 import { Leva } from "leva";
+import IntroSequence from "./IntroSequence";
+
 const transitions: Record<string, [number, number]> = {
   Intro: [0, 0],
   Home: [0, 4],
   Experience: [5, 8],
-  // Add other screen transitions as needed
 };
 
 export default function Scene() {
@@ -37,7 +43,11 @@ export default function Scene() {
     direction,
     isAnimating,
     setIsAnimating,
+    introSequenceReady,
+    setIntroSequenceReady,
   } = useAnimationStore();
+
+  const scrollData = useScroll();
 
   useEffect(() => {
     projectRef.current.ready
@@ -60,14 +70,17 @@ export default function Scene() {
           .then(() => {
             setCurrentScreen(targetScreen);
             setIsAnimating(false);
+            setIntroSequenceReady(true);
           })
           .catch((error) => {
             console.error("Error playing sequence:", error);
             setIsAnimating(false);
+            setIntroSequenceReady(true);
           });
       })
       .catch((error) => {
         console.error("Error in project ready:", error);
+        setIntroSequenceReady(true);
       });
   }, [
     targetScreen,
@@ -76,6 +89,8 @@ export default function Scene() {
     setCurrentScreen,
     isAnimating,
     setIsAnimating,
+    introSequenceReady,
+    setIntroSequenceReady,
   ]);
 
   const cameraTargetRef = useRef<THREE.Mesh>(null);
@@ -113,6 +128,12 @@ export default function Scene() {
               <Terrain />
             </e.group>
           </SheetProvider>
+
+          <ScrollControls pages={3}>
+            <Scroll html>
+              {introSequenceReady ? <IntroSequence /> : null}
+            </Scroll>
+          </ScrollControls>
         </Suspense>
       </Canvas>
     </div>
