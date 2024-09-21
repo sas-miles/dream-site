@@ -1,12 +1,7 @@
 "use client";
 
-import * as THREE from "three";
-import {
-  Environment,
-  Scroll,
-  ScrollControls,
-  useScroll,
-} from "@react-three/drei";
+import type * as THREE from "three";
+import { Environment, Scroll, ScrollControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef } from "react";
 
@@ -46,8 +41,6 @@ export default function Scene() {
     introSequenceReady,
     setIntroSequenceReady,
   } = useAnimationStore();
-
-  const scrollData = useScroll();
 
   useEffect(() => {
     projectRef.current.ready
@@ -105,7 +98,7 @@ export default function Scene() {
         }}
       >
         <Suspense fallback={null}>
-          <Environment preset="night" environmentIntensity={2} />
+          <Environment preset="night" environmentIntensity={2.5} />
           <SheetProvider sheet={sheetRef.current}>
             <PerspectiveCamera
               position={[0, 0, 3]}

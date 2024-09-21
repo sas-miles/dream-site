@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import Landing from "~/components/Landing";
-import { LoadingScreen } from "~/components/LoadingScreen";
+import Landing from "~/_components/Landing";
+import { LoadingScreen } from "~/_components/LoadingScreen";
 import { useProgress } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
-import Scene from "~/components/Scene";
+import Scene from "~/_components/Scene";
 
 export default function Home() {
   const { progress, active } = useProgress();

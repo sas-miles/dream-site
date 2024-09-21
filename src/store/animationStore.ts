@@ -25,4 +25,3 @@ export const useAnimationStore = create<AnimationState>((set) => ({
   setDirection: (direction) => set({ direction }),
   setIsAnimating: (isAnimating) => set({ isAnimating }),
 }));
-1111;

@@ -2,7 +2,6 @@
 
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useScroll } from "@react-three/drei";
 
 function IntroSequence() {
   return (

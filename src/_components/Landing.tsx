@@ -5,7 +5,6 @@ import { motion, useAnimationControls } from "framer-motion";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { useAnimationStore } from "~/store/animationStore";
-import IntroSequence from "./IntroSequence";
 
 export default function Landing() {
   const controls = useAnimationControls();
