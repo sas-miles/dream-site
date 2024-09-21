@@ -1,6 +1,7 @@
 "use client";
 
 import type * as THREE from "three";
+
 import { Environment, Scroll, ScrollControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense, useEffect, useRef } from "react";
@@ -91,12 +92,7 @@ export default function Scene() {
   return (
     <div className="fixed z-0 h-screen w-screen">
       <Leva hidden={true} />
-      <Canvas
-        camera={{ position: [5, 5, 10], fov: 30, near: 1 }}
-        gl={{
-          preserveDrawingBuffer: true,
-        }}
-      >
+      <Canvas camera={{ position: [5, 5, 10], fov: 30, near: 1 }}>
         <Suspense fallback={null}>
           <Environment preset="night" environmentIntensity={2.5} />
           <SheetProvider sheet={sheetRef.current}>

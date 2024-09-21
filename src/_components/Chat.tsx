@@ -6,12 +6,17 @@ import { Input } from "./ui/input";
 import { useChat } from "ai/react";
 
 import UserModal from "./UserModal";
+import { useIsChatActive, useSmartBarStore } from "~/store/smartbarStore";
+
 function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     initialMessages: [],
     id: "chat",
     body: {},
   });
+
+  const { setIsChatActive } = useSmartBarStore();
+  const isChatActive = useIsChatActive();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +28,7 @@ function Chat() {
 
   return (
     <div className="flex h-[100%] w-[100%] flex-col items-center px-8 py-12">
-      <UserModal />
+      {!isChatActive && <UserModal />}
       <div className="stretch flex h-[100%] w-full items-center justify-center align-middle">
         <div className="rounded-sm text-white">
           {messages.map((m) => (
@@ -44,6 +49,7 @@ function Chat() {
               className="rounded-sm border-slate-800 bg-slate-950 text-white"
             ></Input>
             <Button
+              onClick={() => setIsChatActive(true)}
               type="submit"
               className="ml-2 rounded-sm bg-blue-600 px-4 py-2 text-white"
             >
