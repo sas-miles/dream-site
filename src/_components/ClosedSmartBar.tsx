@@ -2,9 +2,12 @@ import React from "react";
 import { useSmartBarStore } from "../store/smartbarStore";
 import { Button } from "./ui/button";
 import { MenuIcon } from "lucide-react";
+import { Input } from "./ui/input";
+import { useSharedChat } from "~/hooks/useSharedChat";
 
 function ClosedSmartBar() {
   const { toggleSmartBar } = useSmartBarStore();
+  const { input, handleInputChange, handleSubmit } = useSharedChat();
 
   return (
     <div className="fixed bottom-8 left-0 right-0 px-4">
@@ -14,7 +17,7 @@ function ClosedSmartBar() {
           <Button
             onClick={toggleSmartBar}
             size="icon"
-            className="flex w-full items-center gap-2 bg-blue-600 text-white"
+            className="flex w-full items-center gap-2 rounded-sm bg-blue-600 text-white"
           >
             Menu
             <MenuIcon className="h-4 w-4" />
@@ -24,11 +27,19 @@ function ClosedSmartBar() {
         {/* Search/Chat Input */}
         <div className="w-full">
           <div className="mx-4 flex-grow">
-            <input
-              type="text"
-              placeholder="How does the system prioritize safety?"
-              className="w-full rounded-md border border-gray-700 bg-transparent p-2 text-white focus:border-blue-600 focus:outline-none"
-            />
+            <form className="flex w-full items-center" onSubmit={handleSubmit}>
+              <Input
+                value={input}
+                onChange={handleInputChange}
+                className="rounded-sm border-slate-800 bg-slate-950 text-white"
+              />
+              <Button
+                type="submit"
+                className="ml-2 rounded-sm bg-blue-600 px-4 py-2 text-white"
+              >
+                Send
+              </Button>
+            </form>
           </div>
         </div>
 

@@ -15,10 +15,3 @@ export const useSmartBarStore = create<SmartBarState>((set) => ({
   isChatActive: false,
   setIsChatActive: (isChatActive) => set({ isChatActive }),
 }));
-
-// Selector to check if the SmartBar is open
-export const useIsSmartBarOpen = () =>
-  useSmartBarStore((state) => state.isOpen);
-
-export const useIsChatActive = () =>
-  useSmartBarStore((state) => state.isChatActive);

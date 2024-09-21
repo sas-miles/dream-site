@@ -3,21 +3,13 @@
 import React, { useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useChat } from "ai/react";
-
 import UserModal from "./UserModal";
-import { useIsChatActive, useSmartBarStore } from "~/store/smartbarStore";
+import { useSmartBarStore } from "~/store/smartbarStore";
+import { useSharedChat } from "~/hooks/useSharedChat";
 
 function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    initialMessages: [],
-    id: "chat",
-    body: {},
-  });
-
-  const { setIsChatActive } = useSmartBarStore();
-  const isChatActive = useIsChatActive();
-
+  const { messages, input, handleInputChange, handleSubmit } = useSharedChat();
+  const isChatActive = useSmartBarStore((state) => state.isChatActive);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -49,7 +41,6 @@ function Chat() {
               className="rounded-sm border-slate-800 bg-slate-950 text-white"
             ></Input>
             <Button
-              onClick={() => setIsChatActive(true)}
               type="submit"
               className="ml-2 rounded-sm bg-blue-600 px-4 py-2 text-white"
             >
