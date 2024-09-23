@@ -12,7 +12,7 @@ function IntroSequence() {
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
       >
-        <div className="w-screen">
+        <div className="z-50 w-screen">
           <div className="flex h-screen items-center justify-center align-middle">
             <h1 className="text-center text-4xl">
               Unmatched Autonomy. Unyielding Precision.

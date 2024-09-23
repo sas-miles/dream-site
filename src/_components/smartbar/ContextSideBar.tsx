@@ -1,14 +1,14 @@
 import React from "react";
 import { cn } from "~/lib/utils";
-import { Button } from "./ui/button";
-import { useSmartBarStore } from "../store/smartbarStore";
+import { Button } from "../ui/button";
+import { useSmartBarStore } from "../../store/smartbarStore";
 import { ChevronsDownUp, X } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "~/components/ui/collapsible";
-import UserModal from "./UserModal";
+} from "~/_components/ui/collapsible";
+import UserModal from "~/_components/smartbar/UserModal";
 
 function ContextSideBar() {
   const { setIsOpen, isChatActive } = useSmartBarStore();

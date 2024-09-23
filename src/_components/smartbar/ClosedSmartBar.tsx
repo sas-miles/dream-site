@@ -1,8 +1,8 @@
 import React from "react";
-import { useSmartBarStore } from "../store/smartbarStore";
-import { Button } from "./ui/button";
+import { useSmartBarStore } from "../../store/smartbarStore";
+import { Button } from "../ui/button";
 import { MenuIcon } from "lucide-react";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { useSharedChat } from "~/hooks/useSharedChat";
 
 function ClosedSmartBar() {

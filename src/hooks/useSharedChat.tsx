@@ -12,13 +12,13 @@ export const useSharedChat = () => {
   });
 
   const handleSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsChatActive(true);
       setIsOpen(true);
       chatProps.handleSubmit(e);
     },
-    [chatProps.handleSubmit, setIsChatActive, setIsOpen],
+    [setIsChatActive, setIsOpen, chatProps],
   );
 
   return { ...chatProps, handleSubmit };

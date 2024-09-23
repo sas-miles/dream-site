@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import UserModal from "./UserModal";
+
+import { Button, Input } from "~/_components/ui";
+import UserModal from "~/_components/smartbar/UserModal";
+
 import { useSmartBarStore } from "~/store/smartbarStore";
 import { useSharedChat } from "~/hooks/useSharedChat";
 

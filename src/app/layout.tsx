@@ -5,7 +5,6 @@ import { type Metadata } from "next";
 
 import { Suspense } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
-import SmartBar from "~/_components/SmartBar";
 export const metadata: Metadata = {
   title: "Dream",
   description: "Exploring new UX/UI patterns enabled by AI",
@@ -19,10 +18,7 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} antialiased`}>
       <body className="bg-black">
         <Suspense fallback={<div>Loading...</div>}>
-          <ClerkProvider>
-            {children}
-            <SmartBar />
-          </ClerkProvider>
+          <ClerkProvider>{children}</ClerkProvider>
         </Suspense>
       </body>
     </html>

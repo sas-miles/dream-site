@@ -21,7 +21,12 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
-    NEXT_PUBLIC_ENABLE_THEATRE_STUDIO: z.boolean(),
+    NEXT_PUBLIC_ENABLE_THEATRE_STUDIO: z
+      .enum(["true", "false"])
+      .default("false"),
+    NEXT_PUBLIC_VERCEL_ENV: z
+      .enum(["production", "preview", "development"])
+      .optional(),
   },
 
   /**
@@ -33,7 +38,8 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     NEXT_PUBLIC_ENABLE_THEATRE_STUDIO:
-      process.env.NEXT_PUBLIC_ENABLE_THEATRE_STUDIO === "true",
+      process.env.NEXT_PUBLIC_ENABLE_THEATRE_STUDIO,
+    NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
 
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
