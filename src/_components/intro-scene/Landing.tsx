@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Landing() {
   return (
-    <div className="z-50">
+    <div className="z-50 py-32">
       <motion.main
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
