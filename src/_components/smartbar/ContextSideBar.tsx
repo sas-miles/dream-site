@@ -13,9 +13,14 @@ import UserModal from "~/_components/smartbar/UserModal";
 interface ContextSideBarProps {
   isOpen: boolean;
   onClose: () => void;
+  onToggleContextSideBar: () => void;
 }
 
-function ContextSideBar({ isOpen, onClose }: ContextSideBarProps) {
+function ContextSideBar({
+  onToggleContextSideBar,
+  isOpen,
+  onClose,
+}: ContextSideBarProps) {
   const { setIsOpen, isChatActive } = useSmartBarStore();
 
   const handleClose = () => {
@@ -25,18 +30,28 @@ function ContextSideBar({ isOpen, onClose }: ContextSideBarProps) {
 
   return (
     <div
-      className={`h-full border-t border-slate-800 md:border-l ${isOpen ? "block" : "hidden md:block"}`}
+      className={`h-full border-t border-slate-800 md:border-l ${isOpen ? "block bg-slate-900" : "hidden md:block"}`}
     >
       <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-8">
         <div className="md:hidden">
-          <Button
-            onClick={handleClose}
-            size="sm"
-            className="w-full items-center justify-center rounded-sm bg-blue-600 text-white"
-          >
-            Close
-            <X className="ml-2 h-4 w-4" />
-          </Button>
+          {isOpen ? (
+            <Button
+              onClick={onToggleContextSideBar}
+              size="sm"
+              className="items-center justify-center rounded-sm bg-blue-600 text-white"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Button
+              onClick={handleClose}
+              size="sm"
+              className="w-full items-center justify-center rounded-sm bg-blue-600 text-white"
+            >
+              Close
+              <X className="ml-2 h-4 w-4" />
+            </Button>
+          )}
         </div>
         <Collapsible>
           <div className="flex flex-col gap-2">

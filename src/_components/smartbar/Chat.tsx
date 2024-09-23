@@ -101,25 +101,6 @@ function Chat({
             </div>
           </div>
         </form>
-        <div className="border-b border-slate-800 p-4 md:hidden">
-          <Button
-            onClick={onToggleContextSideBar}
-            variant="outline"
-            className="flex w-full items-center justify-center"
-          >
-            {isContextSideBarOpen ? (
-              <>
-                <ChevronDown className="mr-2 h-4 w-4" />
-                Hide Context
-              </>
-            ) : (
-              <>
-                <ChevronUp className="mr-2 h-4 w-4" />
-                Show Context
-              </>
-            )}
-          </Button>
-        </div>
       </div>
     </>
   );

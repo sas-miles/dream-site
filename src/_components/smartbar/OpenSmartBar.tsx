@@ -12,7 +12,7 @@ function OpenSmartBar() {
       <div className="flex h-full">
         {/* Site Nav */}
         <div
-          className={`absolute inset-y-0 left-0 w-3/4 flex-shrink-0 overflow-y-auto transition-transform duration-300 ease-in-out md:relative md:w-64 lg:w-72 xl:w-80 ${isSiteNavOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"} `}
+          className={`absolute inset-y-0 left-0 w-3/4 flex-shrink-0 overflow-y-auto transition-transform duration-300 ease-in-out md:relative md:w-64 lg:w-72 xl:w-80 ${isSiteNavOpen ? "translate-x-0 bg-slate-900" : "-translate-x-full md:translate-x-0"} `}
         >
           <SiteNav onClose={() => setIsSiteNavOpen(false)} />
         </div>
@@ -37,6 +37,9 @@ function OpenSmartBar() {
             <ContextSideBar
               isOpen={isContextSideBarOpen}
               onClose={() => setIsContextSideBarOpen(false)}
+              onToggleContextSideBar={() =>
+                setIsContextSideBarOpen(!isContextSideBarOpen)
+              }
             />
           </div>
         </div>
