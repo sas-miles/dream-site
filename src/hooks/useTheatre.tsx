@@ -20,10 +20,6 @@ export function useTheatre() {
 
     sheetRef.current = projectRef.current.sheet("My Sheet");
 
-    // Your animation logic here
-    // This will run in both development and production
-    // ...
-
     return () => {
       // Cleanup if necessary
     };

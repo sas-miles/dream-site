@@ -1,30 +1,65 @@
 import React from "react";
+import { Button } from "../ui/button";
+import { X } from "lucide-react";
 
-function SiteNav() {
+interface SiteNavProps {
+  onClose: () => void;
+}
+
+function SiteNav({ onClose }: SiteNavProps) {
   return (
-    <div className="w-1/3 border-r border-slate-800">
-      <div className="flex h-[100%] flex-col items-center justify-between py-12">
-        <div className="flex h-[100%] flex-col justify-between px-8">
-          <h2>HADRON</h2>
-
-          <div className="flex w-[100%]">
-            <ul className="flex flex-col justify-between gap-12">
-              <li className="text-lg uppercase">
-                <a href="#">Drone</a>
-              </li>
-              <li className="text-lg uppercase">
-                <a href="#">Technology</a>
-              </li>
-              <li className="text-lg uppercase">
-                <a href="#">Invest</a>
-              </li>
-              <li className="text-lg uppercase">
-                <a href="#">Resources</a>
-              </li>
-            </ul>
-          </div>
-          <div>Hadron Labs, 2024</div>
+    <div className="h-full border-r border-slate-800">
+      <div className="flex h-full flex-col p-4 md:p-6">
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-xl font-bold">HADRON</h2>
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+          >
+            <X className="h-6 w-6" />
+          </Button>
         </div>
+
+        <nav className="flex-grow">
+          <ul className="space-y-4">
+            <li>
+              <a
+                href="#"
+                className="block py-2 text-lg transition-colors hover:text-blue-400"
+              >
+                Drone
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="block py-2 text-lg transition-colors hover:text-blue-400"
+              >
+                Technology
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="block py-2 text-lg transition-colors hover:text-blue-400"
+              >
+                Invest
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="block py-2 text-lg transition-colors hover:text-blue-400"
+              >
+                Resources
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div className="mt-auto text-sm text-slate-500">Hadron Labs, 2024</div>
       </div>
     </div>
   );
