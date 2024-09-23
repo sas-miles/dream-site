@@ -28,9 +28,10 @@ const transitions: Record<string, [number, number]> = {
 };
 
 export default function Scene() {
+  useTheatre();
+
   const [, setIsExiting] = useState(false);
 
-  useTheatre();
   const projectRef = useRef(getProject("Hadron", { state: hadronTheatre }));
   const sheetRef = useRef(projectRef.current.sheet("Main"));
 
