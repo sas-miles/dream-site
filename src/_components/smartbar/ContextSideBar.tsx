@@ -53,6 +53,16 @@ function ContextSideBar({
             </Button>
           )}
         </div>
+        <div className="hidden md:block">
+          <Button
+            onClick={handleClose}
+            size="sm"
+            className="w-full items-center justify-center rounded-sm bg-blue-600 text-white"
+          >
+            Close
+            <X className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
         <Collapsible>
           <div className="flex flex-col gap-2">
             <CollapsibleTrigger
