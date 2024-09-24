@@ -9,6 +9,7 @@ import { useSmartBarStore } from "~/store/smartbarStore";
 import { useSharedChat } from "~/hooks/useSharedChat";
 import UserModal from "~/_components/smartbar/UserModal";
 import { Input } from "../ui";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ChatProps {
   onToggleContextSideBar: () => void;
@@ -21,7 +22,8 @@ function Chat({
   isContextSideBarOpen,
   onToggleSiteNav,
 }: ChatProps) {
-  const { messages, input, handleInputChange, handleSubmit } = useSharedChat();
+  const { messages, input, handleInputChange, handleSubmit, setContext } =
+    useSharedChat();
   const isChatActive = useSmartBarStore((state) => state.isChatActive);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +32,17 @@ function Chat({
   };
 
   useEffect(scrollToBottom, [messages]);
+
+  const handleSectionVisible = (id: string, textContent: string) => {
+    setContext(textContent);
+    console.log(`Section ID: ${id}`);
+    console.log(`Text Content: ${textContent}`);
+  };
+
+  const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e, input);
+  };
 
   return (
     <>
@@ -58,18 +71,19 @@ function Chat({
       </div>
       <div className="flex h-[100%] flex-col items-center px-8 py-12">
         {!isChatActive && <UserModal />}
-        <div className="stretch flex h-[100%] w-full items-center justify-center align-middle">
-          <div className="rounded-sm text-white">
+        <ScrollArea className="flex-grow overflow-y-auto">
+          <div className="flex flex-col space-y-4">
             {messages.map((m) => (
               <div key={m.id} className="whitespace-pre-wrap">
                 {m.role === "user" ? "User: " : "AI: "}
                 {m.content}
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
-        </div>
+        </ScrollArea>
 
-        <form className="w-full" onSubmit={handleSubmit}>
+        <form className="w-full" onSubmit={handleSubmitWrapper}>
           <div className="flex w-full flex-col gap-6">
             <div className="flex w-full">
               <Input
