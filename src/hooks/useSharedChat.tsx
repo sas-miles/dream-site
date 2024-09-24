@@ -1,10 +1,11 @@
 import { useChat } from "ai/react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useSmartBarStore } from "~/store/smartbarStore";
+import { useAiContextStore } from "~/store/aiContextStore";
 
 export const useSharedChat = () => {
   const { setIsChatActive, setIsOpen } = useSmartBarStore();
-  const [context, setContext] = useState<string>("");
+  const { context, setContext } = useAiContextStore();
   const chatProps = useChat({
     initialMessages: [],
     id: "chat",

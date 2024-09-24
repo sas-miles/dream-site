@@ -1,5 +1,5 @@
-import { getProject, IProject } from "@theatre/core";
-import type { ISheet } from "@theatre/core";
+import { getProject } from "@theatre/core";
+import type { ISheet, IProject } from "@theatre/core";
 import studio from "@theatre/studio";
 import { useEffect, useRef } from "react";
 

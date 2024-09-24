@@ -1,4 +1,5 @@
-import { useRef, useEffect, ReactNode } from "react";
+import { useRef, useEffect } from "react";
+import type { ReactNode } from "react";
 
 interface SectionProps {
   id: string;
@@ -14,7 +15,7 @@ const Section = ({ id, children, onVisible }: SectionProps) => {
       ([entry]) => {
         if (entry?.isIntersecting) {
           const textContent = Array.from(
-            ref.current?.querySelectorAll("h1, h2, h3, h4, h5, h6, p") || [],
+            ref.current?.querySelectorAll("h1, h2, h3, h4, h5, h6, p") ?? [],
           )
             .map((el) => el.textContent)
             .join(" ");

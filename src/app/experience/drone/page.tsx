@@ -3,12 +3,16 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Section from "~/_components/main-content/Section";
+import { useAiContextStore } from "~/store/aiContextStore";
 
-function page() {
-  const [currentSection, setCurrentSection] = useState<string>("");
+function Page() {
+  const { setContext } = useAiContextStore();
+
+  const [, setCurrentSection] = useState<string>("");
 
   const handleSectionVisible = (id: string, textContent: string) => {
     setCurrentSection(id);
+    setContext(textContent);
     console.log(`Text Content of ${id}: ${textContent}`);
   };
 
@@ -92,4 +96,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

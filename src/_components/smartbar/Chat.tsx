@@ -2,11 +2,11 @@
 
 import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { ChevronRight, ChevronLeft, Menu } from "lucide-react";
 
 import { useSmartBarStore } from "~/store/smartbarStore";
 import { useSharedChat } from "~/hooks/useSharedChat";
+
 import UserModal from "~/_components/smartbar/UserModal";
 import { Input } from "../ui";
 import { ScrollArea } from "../ui/scroll-area";
@@ -22,8 +22,7 @@ function Chat({
   isContextSideBarOpen,
   onToggleSiteNav,
 }: ChatProps) {
-  const { messages, input, handleInputChange, handleSubmit, setContext } =
-    useSharedChat();
+  const { messages, input, handleInputChange, handleSubmit } = useSharedChat();
   const isChatActive = useSmartBarStore((state) => state.isChatActive);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -32,12 +31,6 @@ function Chat({
   };
 
   useEffect(scrollToBottom, [messages]);
-
-  const handleSectionVisible = (id: string, textContent: string) => {
-    setContext(textContent);
-    console.log(`Section ID: ${id}`);
-    console.log(`Text Content: ${textContent}`);
-  };
 
   const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

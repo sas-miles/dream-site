@@ -9,6 +9,11 @@ function ClosedSmartBar() {
   const { toggleSmartBar } = useSmartBarStore();
   const { input, handleInputChange, handleSubmit } = useSharedChat();
 
+  const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e, input);
+  };
+
   return (
     <div className="fixed bottom-8 left-0 right-0 px-4">
       <div className="mx-auto flex max-w-screen-lg items-center justify-between rounded-md border border-slate-800 bg-slate-950">
@@ -27,7 +32,10 @@ function ClosedSmartBar() {
         {/* Search/Chat Input */}
         <div className="w-full">
           <div className="mx-4 flex-grow">
-            <form className="flex w-full items-center" onSubmit={handleSubmit}>
+            <form
+              className="flex w-full items-center"
+              onSubmit={handleSubmitWrapper}
+            >
               <Input
                 value={input}
                 onChange={handleInputChange}
