@@ -33,7 +33,7 @@ function Chat({
 
   return (
     <>
-      <div className="flex items-center justify-between border-b border-slate-800 p-4">
+      <div className="flex items-center justify-between border-b border-slate-800 p-4 md:border-none">
         <Button
           onClick={onToggleSiteNav}
           variant="ghost"
@@ -42,11 +42,7 @@ function Chat({
         >
           <Menu className="h-6 w-6" />
         </Button>
-        <Button
-          onClick={onToggleContextSideBar}
-          variant="outline"
-          className="ml-auto"
-        >
+        <Button onClick={onToggleContextSideBar} className="md:hidden">
           {isContextSideBarOpen ? (
             <>
               <ChevronRight className="mr-2 h-4 w-4" />
@@ -88,14 +84,14 @@ function Chat({
                 Send
               </Button>
             </div>
-            <div className="flex justify-between gap-4">
-              <Button className="flex-grow rounded-sm bg-gray-900 text-slate-400">
+            <div className="hidden justify-between gap-4 md:flex">
+              <Button className="flex-grow rounded-sm bg-gray-900 text-xs text-slate-400">
                 Prompt one
               </Button>
-              <Button className="flex-grow rounded-sm bg-gray-900 text-slate-400">
+              <Button className="flex-grow rounded-sm bg-gray-900 text-xs text-slate-400">
                 Prompt two
               </Button>
-              <Button className="flex-grow rounded-sm bg-gray-900 text-slate-400">
+              <Button className="flex-grow rounded-sm bg-gray-900 text-xs text-slate-400">
                 Prompt three
               </Button>
             </div>
