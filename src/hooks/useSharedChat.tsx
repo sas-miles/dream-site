@@ -5,23 +5,28 @@ import { useAiContextStore } from "~/store/aiContextStore";
 
 export const useSharedChat = () => {
   const { setIsChatActive, setIsOpen } = useSmartBarStore();
-  const { context, setContext } = useAiContextStore();
-  const chatProps = useChat({
-    initialMessages: [],
-    id: "chat",
-    body: { context },
-  });
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  return { messages, input, handleInputChange, handleSubmit };
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>, userMessage: string) => {
-      e.preventDefault();
-      setIsChatActive(true);
-      setIsOpen(true);
-      const combinedMessage = { context, userMessage };
-      chatProps.handleSubmit(e, { body: combinedMessage }); // Pass the message within an object
-    },
-    [setIsChatActive, setIsOpen, chatProps, context],
-  );
+  // const { context, setContext } = useAiContextStore();
+  // const chatProps = useChat({
+  //   // initialMessages: [],
+  //   // id: "chat",
+  //   // body: { context },
+  //   maxSteps: 3,
+  // });
 
-  return { ...chatProps, handleSubmit, setContext };
+  // const handleSubmit = useCallback(
+  //   (e: React.FormEvent<HTMLFormElement>, userMessage: string) => {
+  //     e.preventDefault();
+  //     setIsChatActive(true);
+  //     setIsOpen(true);
+  //     // const combinedMessage = { context, userMessage };
+  //     chatProps.handleSubmit(e); // Pass the message within an object
+  //   },
+  //   [setIsChatActive, setIsOpen, chatProps],
+  // );
+
+  // // return { ...chatProps, handleSubmit, setContext };
+  // return { ...chatProps, handleSubmit };
 };

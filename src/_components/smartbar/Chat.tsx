@@ -5,11 +5,11 @@ import { Button } from "../ui/button";
 import { ChevronRight, ChevronLeft, Menu } from "lucide-react";
 
 import { useSmartBarStore } from "~/store/smartbarStore";
-import { useSharedChat } from "~/hooks/useSharedChat";
 
 import UserModal from "~/_components/smartbar/UserModal";
 import { Input } from "../ui";
 import { ScrollArea } from "../ui/scroll-area";
+import { useChat } from "ai/react";
 
 interface ChatProps {
   onToggleContextSideBar: () => void;
@@ -22,7 +22,9 @@ function Chat({
   isContextSideBarOpen,
   onToggleSiteNav,
 }: ChatProps) {
-  const { messages, input, handleInputChange, handleSubmit } = useSharedChat();
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    maxSteps: 3,
+  });
   const isChatActive = useSmartBarStore((state) => state.isChatActive);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -32,10 +34,10 @@ function Chat({
 
   useEffect(scrollToBottom, [messages]);
 
-  const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleSubmit(e, input);
-  };
+  // const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   handleSubmit(e, input);
+  // };
 
   return (
     <>
@@ -68,15 +70,24 @@ function Chat({
           <div className="flex flex-col space-y-4">
             {messages.map((m) => (
               <div key={m.id} className="whitespace-pre-wrap">
-                {m.role === "user" ? "User: " : "AI: "}
-                {m.content}
+                <div className="font-bold">{m.role}</div>
+                <p>
+                  {m.content.length > 0 ? (
+                    m.content
+                  ) : (
+                    <span className="font-light italic">
+                      {"calling tool: " +
+                        (m?.toolInvocations?.[0]?.toolName ?? "")}
+                    </span>
+                  )}
+                </p>
               </div>
             ))}
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
 
-        <form className="w-full" onSubmit={handleSubmitWrapper}>
+        <form className="w-full" onSubmit={handleSubmit}>
           <div className="flex w-full flex-col gap-6">
             <div className="flex w-full">
               <Input
