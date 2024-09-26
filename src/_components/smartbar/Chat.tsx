@@ -38,7 +38,7 @@ function Chat({
 
   const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSubmit(e, input);
+    handleSubmit(e); // Pass only one argument
   };
 
   return (

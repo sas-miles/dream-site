@@ -14,7 +14,7 @@ function ClosedSmartBar() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    sharedHandleSubmit(e, input);
+    sharedHandleSubmit(e);
   }
 
   return (
