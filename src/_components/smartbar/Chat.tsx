@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Button } from "../ui/button";
-import { ChevronRight, ChevronLeft, Menu } from "lucide-react";
-
 import { useSmartBarStore } from "~/store/smartbarStore";
-
 import UserModal from "~/_components/smartbar/UserModal";
-import { Input } from "../ui";
-import { ScrollArea } from "../ui/scroll-area";
-import { useChat } from "ai/react";
+import { Button, ScrollArea } from "~/_components/ui";
+import { ChevronRight, ChevronLeft, Menu } from "lucide-react";
+import { Input } from "~/_components/ui";
+import { useSharedChat } from "~/hooks/useSharedChat";
 
 interface ChatProps {
   onToggleContextSideBar: () => void;
@@ -17,15 +14,20 @@ interface ChatProps {
   onToggleSiteNav: () => void;
 }
 
+interface Message {
+  id: string;
+  role: string;
+  content: string;
+  toolInvocations?: { toolName: string }[];
+}
+
 function Chat({
   onToggleContextSideBar,
   isContextSideBarOpen,
   onToggleSiteNav,
 }: ChatProps) {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    maxSteps: 3,
-  });
-  const isChatActive = useSmartBarStore((state) => state.isChatActive);
+  const { messages, input, handleInputChange, handleSubmit } = useSharedChat();
+  const { isChatActive } = useSmartBarStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -34,10 +36,10 @@ function Chat({
 
   useEffect(scrollToBottom, [messages]);
 
-  // const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   handleSubmit(e, input);
-  // };
+  const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e, input);
+  };
 
   return (
     <>
@@ -68,7 +70,7 @@ function Chat({
         {!isChatActive && <UserModal />}
         <ScrollArea className="flex-grow overflow-y-auto">
           <div className="flex flex-col space-y-4">
-            {messages.map((m) => (
+            {messages.map((m: Message) => (
               <div key={m.id} className="whitespace-pre-wrap">
                 <div className="font-bold">{m.role}</div>
                 <p>
@@ -86,34 +88,21 @@ function Chat({
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
-
-        <form className="w-full" onSubmit={handleSubmit}>
-          <div className="flex w-full flex-col gap-6">
-            <div className="flex w-full">
-              <Input
-                value={input}
-                onChange={handleInputChange}
-                className="rounded-sm border-slate-800 bg-slate-950 text-white"
-              ></Input>
-              <Button
-                type="submit"
-                className="ml-2 rounded-sm bg-blue-600 px-4 py-2 text-white"
-              >
-                Send
-              </Button>
-            </div>
-            <div className="hidden justify-between gap-4 md:flex">
-              <Button className="flex-grow rounded-sm bg-gray-900 text-xs text-slate-400">
-                Prompt one
-              </Button>
-              <Button className="flex-grow rounded-sm bg-gray-900 text-xs text-slate-400">
-                Prompt two
-              </Button>
-              <Button className="flex-grow rounded-sm bg-gray-900 text-xs text-slate-400">
-                Prompt three
-              </Button>
-            </div>
-          </div>
+        <form
+          className="flex w-full items-center"
+          onSubmit={handleSubmitWrapper}
+        >
+          <Input
+            value={input}
+            onChange={handleInputChange}
+            className="rounded-sm border-slate-800 bg-slate-950 text-white"
+          />
+          <Button
+            type="submit"
+            className="ml-2 rounded-sm bg-blue-600 px-4 py-2 text-white"
+          >
+            Send
+          </Button>
         </form>
       </div>
     </>

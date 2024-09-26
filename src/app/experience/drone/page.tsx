@@ -13,7 +13,7 @@ function Page() {
   const handleSectionVisible = (id: string, textContent: string) => {
     setCurrentSection(id);
     setContext(textContent);
-    console.log(`Text Content of ${id}: ${textContent}`);
+    // console.log(`Text Content of ${id}: ${textContent}`);
   };
 
   return (

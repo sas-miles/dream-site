@@ -1,18 +1,21 @@
 import React from "react";
 import { useSmartBarStore } from "../../store/smartbarStore";
-import { Button } from "../ui/button";
+import { Input, Button } from "~/_components/ui";
 import { MenuIcon } from "lucide-react";
-import { Input } from "../ui/input";
 import { useSharedChat } from "~/hooks/useSharedChat";
 
 function ClosedSmartBar() {
   const { toggleSmartBar } = useSmartBarStore();
-  const { input, handleInputChange, handleSubmit } = useSharedChat();
+  const {
+    input,
+    handleInputChange,
+    handleSubmit: sharedHandleSubmit,
+  } = useSharedChat();
 
-  const handleSubmitWrapper = (e: React.FormEvent<HTMLFormElement>) => {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    handleSubmit(e, input);
-  };
+    sharedHandleSubmit(e, input);
+  }
 
   return (
     <div className="fixed bottom-8 left-0 right-0 px-4">
@@ -32,10 +35,7 @@ function ClosedSmartBar() {
         {/* Search/Chat Input */}
         <div className="w-full">
           <div className="mx-4 flex-grow">
-            <form
-              className="flex w-full items-center"
-              onSubmit={handleSubmitWrapper}
-            >
+            <form className="flex w-full items-center" onSubmit={handleSubmit}>
               <Input
                 value={input}
                 onChange={handleInputChange}
