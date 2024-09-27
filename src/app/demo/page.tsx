@@ -1,25 +1,17 @@
-import { generateText } from "ai";
-import { openaiModel } from "~/server/ai";
-import { z } from "zod";
-export default async function Page() {
-  const res = await generateText({
-    model: openaiModel,
-    prompt: "What day is it today?",
-    tools: {
-      get_day: {
-        description: "Get the day of the week",
-        parameters: z.object({}),
-        execute: async () => {
-          const day = new Date().toLocaleDateString("en-US", {
-            weekday: "long",
-          });
-          return day;
-        },
-      },
-    },
-  });
+import { defineQuery } from "next-sanity";
+import { client } from "~/sanity/client";
+import BlogContent from "~/_components/blog-content/BlogContent";
 
-  console.log(res);
+const options = { next: { revalidate: 60 } };
 
-  return <div>Hello there</div>;
+const BLOGS_QUERY = defineQuery(`*[
+  _type == "blog"
+  && defined(slug.current)
+]{_id, title, slug, excerpt, mainImage{asset->{url}}}`);
+
+async function Page() {
+  const blogs = await client.fetch(BLOGS_QUERY, {}, options);
+  return <BlogContent blogs={blogs} />;
 }
+
+export default Page;

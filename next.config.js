@@ -7,6 +7,9 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   transpilePackages: ["three"],
+  images: {
+    domains: ["cdn.sanity.io", "via.placeholder.com"],
+  },
 };
 
 export default config;
