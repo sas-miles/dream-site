@@ -9,96 +9,70 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import Terrain from "./Terrain";
 import { Drone } from "./Drone";
 
-import { getProject } from "@theatre/core";
 import { PerspectiveCamera } from "@theatre/r3f";
-import { useAnimationStore } from "~/store/animationStore";
 
-import { useTheatre } from "~/hooks/useTheatre";
+import { getProject } from "@theatre/core";
+import type { ISheet, IProject } from "@theatre/core";
+import studio from "@theatre/studio";
+import extension from "@theatre/r3f/dist/extension";
 import { editable as e, SheetProvider } from "@theatre/r3f";
-import hadronTheatre from "~/store/Hadron.theatre-project-state.json";
+import myProjectState from "src/store/Hadron.theatre-project-state.json";
 
 import { Leva } from "leva";
 import IntroSequence from "./IntroSequence";
-import ScrollHandler from "./ScrollHandler";
+// import ScrollHandler from "./ScrollHandler";
+
+export const isProd = process.env.NEXT_PUBLIC_ENABLE_THEATRE_STUDIO === "false";
+if (!isProd) {
+  studio.initialize();
+  studio.extend(extension);
+}
+const project = getProject(
+  "hadronTheatre",
+  isProd
+    ? {
+        state: myProjectState,
+      }
+    : undefined,
+);
+const mainSheet = project.sheet("Main");
 
 const transitions: Record<string, [number, number]> = {
-  Intro: [0, 4],
-  Home: [0, 4],
+  Intro: [0, 2],
+  Home: [2, 4],
   Experience: [5, 8],
 };
 
 export default function Scene() {
-  useTheatre();
-
-  const [, setIsExiting] = useState(false);
-
-  const projectRef = useRef(getProject("Hadron", { state: hadronTheatre }));
-  const sheetRef = useRef(projectRef.current.sheet("Main"));
-
-  const {
-    setCurrentScreen,
-    setIsAnimating,
-    introSequenceReady,
-    isAnimating,
-    setIntroSequenceReady,
-  } = useAnimationStore();
+  const [currentScreen, setCurrentScreen] = useState("Intro");
+  const [targetScreen, setTargetScreen] = useState("Home");
+  const isSetup = useRef(false);
 
   useEffect(() => {
-    projectRef.current.ready
-      .then(() => {
-        const transition = transitions.Intro;
-        if (!transition) return;
-        setIntroSequenceReady(false);
-        setIsAnimating(true);
+    project.ready.then(() => {
+      if (currentScreen === targetScreen) {
+        return;
+      }
 
-        sheetRef.current.sequence
-          .play({
-            range: transition,
-            direction: "normal",
-            rate: 1,
-          })
-          .then(() => {
-            setCurrentScreen("Home");
-            setIsAnimating(false);
-            setIntroSequenceReady(true);
-            console.log("Intro sequence ready:", true);
-          })
-          .catch((error) => {
-            console.error("Error playing sequence:", error);
-            setIsAnimating(false);
-            setIntroSequenceReady(true);
-            console.log("Intro sequence ready:", true);
-          });
-      })
-      .catch((error) => {
-        console.error("Error in project ready:", error);
-        setIntroSequenceReady(true);
-        console.log("Intro sequence ready:", true);
-      });
-  }, [setCurrentScreen, setIsAnimating, setIntroSequenceReady]);
+      if (isSetup.current && currentScreen === "Intro") {
+        return;
+      }
+      isSetup.current = true;
+      const reverse = targetScreen === "Home" && currentScreen !== "Intro";
+      const transition = transitions[reverse ? currentScreen : targetScreen];
+      if (!transition) {
+        return;
+      }
 
-  const triggerExperienceTransition = () => {
-    const transition = transitions.Experience;
-    if (!transition) return;
-
-    setIsAnimating(true);
-
-    sheetRef.current.sequence
-      .play({
-        range: transition,
-        direction: "normal",
-        rate: 1,
-      })
-      .then(() => {
-        setCurrentScreen("Experience");
-        setIsAnimating(false);
-        console.log("Experience transition complete");
-      })
-      .catch((error) => {
-        console.error("Error playing Experience transition:", error);
-        setIsAnimating(false);
-      });
-  };
+      mainSheet.sequence
+        .play({
+          range: transition,
+        })
+        .then(() => {
+          setCurrentScreen(targetScreen);
+        });
+    });
+  }, [targetScreen]);
 
   const cameraTargetRef = useRef<THREE.Mesh>(null);
 
@@ -109,7 +83,7 @@ export default function Scene() {
         <Canvas camera={{ position: [5, 5, 10], fov: 30, near: 1 }}>
           <Suspense fallback={null}>
             <Environment preset="night" environmentIntensity={2.5} />
-            <SheetProvider sheet={sheetRef.current}>
+            <SheetProvider sheet={mainSheet}>
               <PerspectiveCamera
                 position={[0, 0, 3]}
                 makeDefault
@@ -134,12 +108,8 @@ export default function Scene() {
 
             <ScrollControls pages={3}>
               <Scroll html>
-                {introSequenceReady && !isAnimating ? <IntroSequence /> : null}
+                <IntroSequence onScreenChange={setTargetScreen} />
               </Scroll>
-              <ScrollHandler
-                onExperienceTransition={triggerExperienceTransition}
-                setIsExiting={setIsExiting}
-              />
             </ScrollControls>
           </Suspense>
         </Canvas>

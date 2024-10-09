@@ -14,7 +14,8 @@ interface AnimationState {
 }
 
 export const useAnimationStore = create<AnimationState>((set) => ({
-  currentScreen: "Intro",
+  currentScreen: "",
+  screenChange: false,
   targetScreen: "Intro",
   direction: "normal",
   isAnimating: false,
